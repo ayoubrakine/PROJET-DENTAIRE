@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.sendtp.SendPWActivity">
+
+    <ImageView
+        android:id="@+id/imageview"
+        android:layout_width="323dp"
+        android:layout_height="419dp"
+
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step2"
+        app:srcCompat="@drawable/dentt" />
+
+    <ImageView
+        android:id="@+id/submit"
+        android:layout_width="70dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/result"
+        app:srcCompat="@drawable/submit" />
+
+    <ImageView
+        android:id="@+id/reset"
+        android:layout_width="70dp"
+        android:layout_height="52dp"
+
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/reset" />
+
+    <ImageView
+        android:id="@+id/result"
+        android:layout_width="70dp"
+        android:layout_height="52dp"
+
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/reset"
+        app:srcCompat="@drawable/result" />
+
+    <ImageView
+        android:id="@+id/step3"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSelectImage"
+        app:srcCompat="@drawable/step3" />
+
+    <ImageView
+        android:id="@+id/step2"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/step1"
+        app:layout_constraintTop_toBottomOf="@+id/btnSelectImage"
+        app:srcCompat="@drawable/step2" />
+
+    <ImageView
+        android:id="@+id/step1"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/camera"
+        app:srcCompat="@drawable/step1" />
+
+    <ImageView
+        android:id="@+id/camera"
+        android:layout_width="67dp"
+        android:layout_height="49dp"
+
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnSelectImage"
+        app:layout_constraintHorizontal_bias="0.131"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/camera" />
+
+    <ImageView
+        android:id="@+id/btnSelectImage"
+        android:layout_width="72dp"
+        android:layout_height="49dp"
+
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="104dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/original" />
+
+    <TextView
+        android:id="@+id/step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=""
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
