@@ -5,19 +5,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment"
-        android:background="#ececec">
+        android:background="#ececec"
+    android:backgroundTint="@color/lavender">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="170dp">
+                    android:layout_marginTop="170dp"
+                    android:gravity="center">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -37,63 +40,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-
+                        android:gravity="center"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.5">
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/button"
-                            style="@android:style/Widget.Button"
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/btn_background_1"
-                            android:drawableStart="@drawable/ic_1"
-                            android:drawablePadding="20dp"
-                            android:paddingStart="20dp"
-                            android:text="My Reviews"
-                            android:textAlignment="viewStart"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/button2"
-                            style="@android:style/Widget.Button"
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/btn_background_1"
-                            android:drawableStart="@drawable/ic_2"
-                            android:drawablePadding="20dp"
-                            android:paddingStart="20dp"
-                            android:text="Account Settings"
-                            android:textAlignment="viewStart"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/button3"
-                            style="@android:style/Widget.Button"
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/btn_background_1"
-                            android:drawableStart="@drawable/ic_3"
-                            android:drawablePadding="20dp"
-                            android:paddingStart="20dp"
-                            android:text="Persoanl Information"
-                            android:textAlignment="viewStart"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/button4"
@@ -105,31 +54,55 @@
                             android:layout_marginEnd="32dp"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/btn_background_1"
-                            android:drawableStart="@drawable/ic_4"
+                            android:drawablePadding="20dp"
+                            android:text="WELECOME"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            />
+
+
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/profile"
+                            style="@android:style/Widget.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="70dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/btn_background_1"
+                            android:drawableStart="@drawable/ic_3"
                             android:drawablePadding="20dp"
                             android:paddingStart="20dp"
-                            android:text="Notification"
+                            android:text="Informations personnel"
                             android:textAlignment="viewStart"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/button5"
+                            android:id="@+id/tp"
                             style="@android:style/Widget.Button"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:layout_marginStart="32dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginEnd="32dp"
                             android:layout_marginBottom="10dp"
                             android:background="@drawable/btn_background_1"
-                            android:drawableStart="@drawable/ic_5"
+                            android:drawableStart="@drawable/ic_2"
                             android:drawablePadding="20dp"
                             android:paddingStart="20dp"
-                            android:text="Fingerprint Settings"
+                            android:text="TP à rendre"
                             android:textAlignment="viewStart"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
+
+
+
+
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

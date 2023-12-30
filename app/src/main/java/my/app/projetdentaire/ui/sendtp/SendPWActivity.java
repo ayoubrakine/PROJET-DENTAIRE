@@ -1,5 +1,6 @@
 package my.app.projetdentaire.ui.sendtp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,9 +30,11 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import my.app.projetdentaire.R;
 import my.app.projetdentaire.api.RetrofitStudent;
@@ -45,6 +48,7 @@ import retrofit2.Response;
 
 public class SendPWActivity extends AppCompatActivity {
 
+    private int nbrstep = 1;
     private int zoomClickCounter = 0;
     private ScaleGestureDetector scaleGestureDetector;
     private float mScaleFactor = 1.0f;
@@ -56,6 +60,10 @@ public class SendPWActivity extends AppCompatActivity {
     private boolean isProcessImageCalledvertical = false;
     private boolean isProcessImageCalledhorizontal = false;
     Bitmap contoursBitmap;
+    private Bitmap originalBitmap;
+    private Bitmap imageFront,imageSide;
+
+    double somme,note = 0;
 
 
     {
@@ -74,9 +82,9 @@ public class SendPWActivity extends AppCompatActivity {
 
     private ImageView btnSelectImage, camera, gallery, reset, result, submit, step1, step2, step3;
     private List<Point> selectedPoints = new ArrayList<>();
-    private Bitmap originalBitmap;
-    String encodedImage;
-    String encodedImage1;
+
+    String encodedImage,encodedImage1,encodedImageFront,encodedImageSide;
+
 
     private List<CalculationResult> calculationResults = new ArrayList<>();
 
@@ -106,6 +114,7 @@ public class SendPWActivity extends AppCompatActivity {
         step1 = findViewById(R.id.step1);
         step2 = findViewById(R.id.step2);
         step3 = findViewById(R.id.step3);
+        submit = findViewById(R.id.submit);
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +203,29 @@ public class SendPWActivity extends AppCompatActivity {
         btnSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImage();
+                if (nbrstep == 1) {
+                    showPopupStep(SendPWActivity.this,"ETAPE 1 : CALCULE WITH FRONT IMAGE");
+                    selectImage();
+                    nbrstep = 2;
+                } else if (nbrstep == 2) {
+                    step.setText("");
+                    showPopupStep(SendPWActivity.this,"ETAPE 2 : CALCULE WITH SIDE IMAGE");
+                    selectImage();
+                }
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(CalculationResult.getIdCounter() == 5){
+                    showPopupStep(SendPWActivity.this,"Vous etes prêt ! Veuillez clicker sur envoyer dans le popup résultat pour envoyer votre TP .");
+                }
+                else{
+                    showPopupStep(SendPWActivity.this,"WARNING . Terminer les 3 etapes pour l'image de front et de side !");
+                }
+
             }
         });
 
@@ -249,53 +280,104 @@ public class SendPWActivity extends AppCompatActivity {
 
         // Display results for processImage
         StringBuilder resultsText = new StringBuilder();
-        for (CalculationResult result : calculationResults) {
-            resultsText.append("ID: ").append(result.getId()).append("\n");
-            resultsText.append("Angle gauche v: ").append(result.getAngleGauche()).append(" degrés\n");
-            resultsText.append("Angle droit v: ").append(result.getAngleDroit()).append(" degrés\n");
-            resultsText.append("Angle d'intersection v: ").append(result.getIntersectionAngleDeg()).append(" degrés\n");
-            resultsText.append("Résultat de symétrie v: ").append(result.getIssymetrical());
-            resultsText.append("\n");
 
-            if (result.getId() == 2) {
+        for (CalculationResult result : calculationResults) {
+
+            if (result.getId() == 1 || result.getId() == 3) {
+                //resultsText.append("ID: ").append(result.getId()).append("\n");
+                resultsText.append("-----");
+                if(result.getId() == 1){
+                    resultsText.append("---FRONT---");
+                }else{
+                    resultsText.append("---SIDE---");
+                }
+                resultsText.append("-Les versants externes : ").append("\n");
+                resultsText.append("Lingual 15°/à la vertical : ").append(result.getAngleGauche()).append(" degrés\n");
+                resultsText.append("Vestibulaire à 45°/à la vertical: ").append(result.getAngleDroit()).append(" degrés\n");
+                resultsText.append("\n");
+            }
+            if (result.getId() == 2 || result.getId() == 4) {
+                //resultsText.append("ID: ").append(result.getId()).append("\n");
+                resultsText.append("-----");
+                if(result.getId() == 2){
+                    resultsText.append("---FRONT---");
+                }else{
+                    resultsText.append("---SIDE---");
+                }
+                resultsText.append("Dépouille des parois vestibulo-linguales : ").append(result.getAngleGauche()).append(" degrés\n");
+                resultsText.append("Dépouille des parois mésio-distale : ").append(result.getAngleDroit()).append(" degrés\n");
+                resultsText.append("Angle de convergence : ").append(result.getIntersectionAngleDeg()).append(" degrés\n");
+                somme = result.getAngleGauche() + result.getAngleDroit();
+                resultsText.append("Somme des angles : ").append(somme).append(" degrés\n");
+                resultsText.append("Résultat de symétrie : ").append(result.getIssymetrical());
+                resultsText.append("\n");
+            }
+
+
+            if (result.getId() == 4) {
+
                 // Add "Envoyer" button with OnClickListener
                 builder.setPositiveButton("Envoyer", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (originalBitmap != null) {
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
+                            if (calculationResults.get(0).getImages() != null) {
+                            ByteArrayOutputStream byteArrayOutputStream0 = new ByteArrayOutputStream();
+                            calculationResults.get(0).getImages().compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream0);
+                            byte[] imageBytes0 = byteArrayOutputStream0.toByteArray();
                             // Convertir les bytes de l'image en une chaîne Base64
-                            encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
+                            encodedImageFront = Base64.encodeToString(imageBytes0, Base64.DEFAULT);
+                            }
+                        if (calculationResults.get(3).getImages() != null) {
+                            ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
+                            calculationResults.get(3).getImages().compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream1);
+                            byte[] imageBytes1 = byteArrayOutputStream1.toByteArray();
+                            // Convertir les bytes de l'image en une chaîne Base64
+                            encodedImageSide = Base64.encodeToString(imageBytes1, Base64.DEFAULT);
                         }
 
-                        if (contoursBitmap != null) {
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            contoursBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                            byte[] imageBytes = byteArrayOutputStream.toByteArray();
+                        Calendar calendar = Calendar.getInstance();
+                        int year = calendar.get(Calendar.YEAR);
+                        int month = calendar.get(Calendar.MONTH) + 1;
+                        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                        // Formater la date sélectionnée au format requis (yyyy-MM-dd)
+                        String formattedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, dayOfMonth);
+                        // Obtention de la date et de l'heure courantes
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY); // Heure au format 24 heures
+                        int minute = calendar.get(Calendar.MINUTE);
+                        String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
 
-                            // Convertir les bytes de l'image en une chaîne Base64
-                            encodedImage1 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                        if(somme>6 && somme<16){
+                            note=17;
+                        }else if (somme>4 && somme<18){
+                            note=14;
+                        }else if(somme>2 && somme<20){
+                            note=12;
+                        }else note=10;
 
-                        }
-
-                        createPw(studentId, pwdId, new StudentPW(encodedImage, calculationResultshorizontal.get(0).getAngleGaucheHorizontal(), calculationResultshorizontal.get(0).getAngleDroitHorizontal(), calculationResults.get(0).getAngleGauche(), calculationResults.get(0).getAngleDroit(), calculationResults.get(1).getAngleGauche(), calculationResults.get(1).getAngleDroit(), calculationResults.get(0).getIntersectionAngleDeg(), 0, encodedImage1));
+                            // String imageFront, double af1, double af2, double bf1, double bf2, double cf1, double cf2, String imageSide, double as1, double as2, double bs1, double bs2, double cs1, double cs2, String date, String time, double convergence, String isSymetrical, double note
+                        createPw(studentId, pwdId, new StudentPW(encodedImageFront, calculationResultshorizontal.get(0).getAngleGaucheHorizontal(), calculationResultshorizontal.get(0).getAngleDroitHorizontal(), calculationResults.get(0).getAngleGauche(), calculationResults.get(0).getAngleDroit(), calculationResults.get(1).getAngleGauche(), calculationResults.get(1).getAngleDroit(), encodedImageSide,calculationResultshorizontal.get(1).getAngleGaucheHorizontal(), calculationResultshorizontal.get(1).getAngleDroitHorizontal(), calculationResults.get(1).getAngleGauche(), calculationResults.get(1).getAngleDroit(), calculationResults.get(2).getAngleGauche(), calculationResults.get(2).getAngleDroit(),formattedDate,formattedTime, calculationResults.get(0).getIntersectionAngleDeg(), calculationResults.get(0).getIssymetrical(),note));
+                        //createPw(studentId, pwdId, new StudentPW(encodedImage, calculationResultshorizontal.get(0).getAngleGaucheHorizontal(), calculationResultshorizontal.get(0).getAngleDroitHorizontal(), calculationResults.get(0).getAngleGauche(), calculationResults.get(0).getAngleDroit(), calculationResults.get(1).getAngleGauche(), calculationResults.get(1).getAngleDroit(), calculationResults.get(0).getIntersectionAngleDeg(), 0, encodedImage1));
                         Toast.makeText(getApplicationContext(), "TP envoyé avec succes", Toast.LENGTH_SHORT).show();
-
                     }
                 });
+
+
             }
         }
 
         // Display results for processImageHorizontal
         for (CalculationResultHorizontal resultt : calculationResultshorizontal) {
-            resultsText.append("ID: ").append(resultt.getId()).append("\n");
-            resultsText.append("Angle gauche h: ").append(resultt.getAngleGaucheHorizontal()).append(" degrés\n");
-            resultsText.append("Angle droit h: ").append(resultt.getAngleDroitHorizontal()).append(" degrés\n");
+            //resultsText.append("ID: ").append(resultt.getId()).append("\n");
+            resultsText.append("-----");
+            if(resultt.getId() == 1){
+                resultsText.append("---FRONT---");
+            }else{
+                resultsText.append("---SIDE---");
+            }
+            resultsText.append("-Les versants internes : ").append("\n");
+            resultsText.append("Lingual 15°/à l'horizontal : ").append(resultt.getAngleGaucheHorizontal()).append(" degrés\n");
+            resultsText.append("Vestibulaire à 45°/à l'horizontal : ").append(resultt.getAngleDroitHorizontal()).append(" degrés\n");
             resultsText.append("\n");
         }
 
@@ -620,7 +702,6 @@ public class SendPWActivity extends AppCompatActivity {
             double taperAngleDeg2 = Math.toDegrees(taperAngleRad2);
             double angleDroit = 90 - taperAngleDeg2;
 
-
             // Calcul de l'angle formé par l'intersection des deux droites vertes
             // Équation des droites : y = mx + c, où m est la pente et c est l'ordonnée à l'origine
 
@@ -634,17 +715,9 @@ public class SendPWActivity extends AppCompatActivity {
             // Conversion de l'angle en degrés
             double intersectionAngleDeg = Math.toDegrees(intersectionAngleRad);
 
-            // Affichage de l'angle d'intersection dans le TextView
-            //anglesTextView.append("Angle d'intersection : " + intersectionAngleDeg + " degrés\n");
-
-
-            // Appeler la méthode pour évaluer la symétrie
-            // evaluateSymmetry(angleGauche, angleDroit);
-
             isProcessImageCalledvertical = true;
-            calculationResults.add(new CalculationResult(angleGauche, angleDroit, intersectionAngleDeg, evaluateSymmetry(angleGauche, angleDroit)));
-            //isProcessImageCalledvertical = false;
-
+            //calculationResults.add(new CalculationResult(angleGauche, angleDroit, intersectionAngleDeg, evaluateSymmetry(angleGauche, angleDroit)));
+            calculationResults.add(new CalculationResult(angleGauche, angleDroit, intersectionAngleDeg, evaluateSymmetry(angleGauche, angleDroit),originalBitmap));
         }
         // Convertir le Mat avec les contours en Bitmap
         contoursBitmap = Bitmap.createBitmap(contoursImage.cols(), contoursImage.rows(), Bitmap.Config.ARGB_8888);
@@ -777,8 +850,7 @@ public class SendPWActivity extends AppCompatActivity {
 
             isProcessImageCalledhorizontal = true;
             calculationResultshorizontal.add(new CalculationResultHorizontal(angleGaucheAvecLigne, angleDroitAvecLigne));
-            //calculationResults.add(new CalculationResult(angleGaucheAvecLigne, angleDroitAvecLigne));
-            //isProcessImageCalledhorizontal = false;
+
 
         }
 
@@ -844,27 +916,20 @@ public class SendPWActivity extends AppCompatActivity {
             return new Point(x, y);
         }
     }
-
     public void createPw(long s, long d, StudentPW studentPW) {
-
         StudentApi angleRetrofit = RetrofitStudent.getClient().create(StudentApi.class);
-
         Call<StudentPW> call = angleRetrofit.create(s, d, s, d, studentPW);
         call.enqueue(new Callback<StudentPW>() {
             @Override
             public void onResponse(Call<StudentPW> call, Response<StudentPW> response) {
                 Log.d("response", response.toString());
             }
-
             @Override
             public void onFailure(Call<StudentPW> call, Throwable t) {
                 Log.d("err", t.toString());
-
             }
         });
-
     }
-
     // Override onDestroy to release OpenCV resources
     @Override
     protected void onDestroy() {
@@ -872,5 +937,21 @@ public class SendPWActivity extends AppCompatActivity {
         if (originalMat != null) {
             originalMat.release();
         }
+    }
+    public void showPopupStep(Context context, String message) {
+        // Créer un AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // Définir le message à afficher
+        builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss(); // Fermer le popup
+                    }
+                });
+        // Créer l'AlertDialog
+        AlertDialog alert = builder.create();
+        // Afficher le popup
+        alert.show();
     }
 }

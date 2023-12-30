@@ -9,12 +9,21 @@ public class StudentPW {
     private double bf2;
     private double cf1;
     private double cf2;
-    private double cvf2;
-    private double note;
     private String imageSide;
+    private double as1;
+    private double as2;
+    private double bs1;
+    private double bs2;
+    private double cs1;
+    private double cs2;
+    //private double cvs2;
 
     private String date;
     private String time;
+    private double convergence;
+    private String isSymetrical;
+    private double note;
+
 
     public StudentPW() {
     }
@@ -27,12 +36,75 @@ public class StudentPW {
         this.bf2 = bf2;
         this.cf1 = cf1;
         this.cf2 = cf2;
-        this.cvf2 = cvf2;
+        //this.cvf2 = cvf2;
         this.note = note;
         this.imageSide = imageSide;
 
     }
 
+    public StudentPW(String imageFront, double af1, double af2, double bf1, double bf2, double cf1, double cf2, double cvf2, double note, String imageSide, double as1, double as2, double bs1, double bs2, double cs1, double cs2, double cvs2) {
+        this.imageFront = imageFront;
+        this.af1 = af1;
+        this.af2 = af2;
+        this.bf1 = bf1;
+        this.bf2 = bf2;
+        this.cf1 = cf1;
+        this.cf2 = cf2;
+        //this.cvf2 = cvf2;
+        this.note = note;
+        this.imageSide = imageSide;
+        this.as1 = as1;
+        this.as2 = as2;
+        this.bs1 = bs1;
+        this.bs2 = bs2;
+        this.cs1 = cs1;
+        this.cs2 = cs2;
+        //this.cvs2 = cvs2;
+    }
+
+    public StudentPW(String imageFront, double af1, double af2, double bf1, double bf2, double cf1, double cf2, double cvf2, double note, String imageSide, double as1, double as2, double bs1, double bs2, double cs1, double cs2, double cvs2, String date,String time) {
+        this.imageFront = imageFront;
+        this.af1 = af1;
+        this.af2 = af2;
+        this.bf1 = bf1;
+        this.bf2 = bf2;
+        this.cf1 = cf1;
+        this.cf2 = cf2;
+        //this.cvf2 = cvf2;
+        this.note = note;
+        this.imageSide = imageSide;
+        this.as1 = as1;
+        this.as2 = as2;
+        this.bs1 = bs1;
+        this.bs2 = bs2;
+        this.cs1 = cs1;
+        this.cs2 = cs2;
+        //this.cvs2 = cvs2;
+        this.date = date;
+        this.time = time;
+    }
+
+    public StudentPW(String imageFront, double af1, double af2, double bf1, double bf2, double cf1, double cf2, String imageSide, double as1, double as2, double bs1, double bs2, double cs1, double cs2, String date, String time, double convergence, String isSymetrical, double note) {
+        this.imageFront = imageFront;
+        this.af1 = af1;
+        this.af2 = af2;
+        this.bf1 = bf1;
+        this.bf2 = bf2;
+        this.cf1 = cf1;
+        this.cf2 = cf2;
+        this.imageSide = imageSide;
+        this.as1 = as1;
+        this.as2 = as2;
+        this.bs1 = bs1;
+        this.bs2 = bs2;
+        this.cs1 = cs1;
+        this.cs2 = cs2;
+        this.date = date;
+        this.time = time;
+        this.convergence = convergence;
+        this.isSymetrical = isSymetrical;
+        this.note = note;
+    }
 
     public String getImageFront() {
         return imageFront;
@@ -90,13 +162,7 @@ public class StudentPW {
         this.cf2 = cf2;
     }
 
-    public double getCvf2() {
-        return cvf2;
-    }
 
-    public void setCvf2(double cvf2) {
-        this.cvf2 = cvf2;
-    }
 
     public double getNote() {
         return note;
