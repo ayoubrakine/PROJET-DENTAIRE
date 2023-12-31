@@ -26,6 +26,6 @@ https://github.com/ayoubrakine/PROJET-DENTAIRE/assets/117600764/3ce82e50-3c95-40
 <div align="center">
  <b style = {font-weight: 600}>Visitors Count</b>
 
-<p align="center"><img align="center" src="https://profile-counter.glitch.me/{ayoubrakine}/count.svg" /></p> 
+<p align="center"><img align="center" src="https://profile-counter.glitch.me/{ayoubrakine/PROJET-DENTAIRE}/count.svg" /></p> 
 <br>
 </div>
